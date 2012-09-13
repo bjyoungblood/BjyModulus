@@ -1,0 +1,12 @@
+<table>
+    <tr>
+        <th>Module</th>
+        <th>Commit Hash</th>
+    </tr>
+    <?php foreach ($this->modules as $name => $hash) : ?>
+    <tr>
+        <td><?=$name?></td>
+        <td><?=$hash?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
