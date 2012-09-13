@@ -1,12 +1,16 @@
 <table>
     <tr>
         <th>Module</th>
-        <th>Commit Hash</th>
+        <th>HEAD</th>
+        <th>upstream/master</th>
+        <th>Status</th>
     </tr>
-    <?php foreach ($this->modules as $name => $hash) : ?>
+    <?php foreach ($this->modules as $name => $data) : ?>
     <tr>
         <td><?=$name?></td>
-        <td><?=$hash?></td>
+        <td><?=$data['local']?></td>
+        <td><?=$data['upstreamHash']?></td>
+        <td><?=$data['status'];?></td>
     </tr>
     <?php endforeach; ?>
 </table>
