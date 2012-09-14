@@ -20,25 +20,29 @@ class ModulesController extends AbstractActionController
 
             $localHash = exec("cd $pathArg; git rev-parse HEAD");
             if ($localHash == '') {
-                $localHash = 'module not tracked by git';
-            }
-
-            $remotes = exec("cd $pathArg; git remote");
-            $remotes = explode("\n", $remotes);
-
-            if (array_search("upstream", $remotes) !== false) {
-                $upstream = $this->getUpstreamHash($pathArg, 'upstream');
-            } else if (array_search("origin", $remotes) !== false) {
-                $upstream = $this->getUpstreamHash($pathArg, 'origin');
+                $moduleVersions[$name] = array(
+                    'local'        => 'N/A',
+                    'upstreamHash' => 'N/A',
+                    'status'       => 'Module not tracked by git',
+                );
             } else {
-                $upstream = 'n/a';
-            }
+                $remotes = exec("cd $pathArg; git remote");
+                $remotes = explode("\n", $remotes);
 
-            $moduleVersions[$name] = array(
-                'local'        => $localHash,
-                'upstreamHash' => $upstream['upstreamHash'],
-                'status'       => $upstream['status'],
-            );
+                if (array_search("upstream", $remotes) !== false) {
+                    $upstream = $this->getUpstreamHash($pathArg, 'upstream');
+                } else if (array_search("origin", $remotes) !== false) {
+                    $upstream = $this->getUpstreamHash($pathArg, 'origin');
+                } else {
+                    $upstream = 'n/a';
+                }
+
+                $moduleVersions[$name] = array(
+                    'local'        => $localHash,
+                    'upstreamHash' => $upstream['upstreamHash'],
+                    'status'       => $upstream['status'],
+                );
+            }
         }
 
         return array('modules' => $moduleVersions);
