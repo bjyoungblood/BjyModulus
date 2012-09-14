@@ -3,7 +3,7 @@
     "description": "Check current git commit hash of installed ZF2 modules",
     "type": "library",
     "keywords": [
-        "zf2",
+        "zf2"
     ],
     "homepage": "https://github.com/bjyoungblood/BjyModulus",
     "authors": [
