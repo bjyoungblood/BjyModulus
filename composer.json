@@ -1,0 +1,28 @@
+{
+    "name": "bjyoungblood/bjy-modulus",
+    "description": "Check current git commit hash of installed ZF2 modules",
+    "type": "library",
+    "keywords": [
+        "zf2",
+    ],
+    "homepage": "https://github.com/bjyoungblood/BjyModulus",
+    "authors": [
+        {
+            "name": "Ben Youngblood",
+            "email": "bx.youngblood@gmail.com",
+            "homepage": "http://bjyoungblood.com/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "zendframework/zendframework": "2.0.*",
+    },
+    "autoload": {
+        "psr-0": {
+            "BjyModulus": "src/"
+        },
+        "classmap": [
+            "./"
+        ]
+    }
+}
