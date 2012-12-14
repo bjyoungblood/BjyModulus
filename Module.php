@@ -11,15 +11,6 @@ class Module implements AutoloaderProviderInterface
 {
     protected static $loadedModules = array();
 
-    public function getServiceConfig()
-    {
-        return array(
-            'invokables' => array(
-                'bjymodulus_listener' => 'BjyModulus\ModuleListener',
-            ),
-        );
-    }
-
     public function getAutoloaderConfig()
     {
         return array(
