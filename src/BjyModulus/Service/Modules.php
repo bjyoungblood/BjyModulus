@@ -10,6 +10,7 @@ class Modules
     const STATUS_GIT_BRANCH_AHEAD    = 'Your branch is %d ahead';
     const STATUS_GIT_BRANCH_BEHIND   = 'Your branch is %d behind';
     const STATUS_GIT_UP_TO_DATE      = 'Up to date';
+    const STATUS_GIT_NOT_TRACKED     = 'Module not tracked by git';
 
     /**
      * @param string $moduleName
@@ -43,7 +44,7 @@ class Modules
             $moduleVersions = array(
                 'local'        => 'N/A',
                 'upstreamHash' => 'N/A',
-                'status'       => 'Module not tracked by git',
+                'status'       => self::STATUS_GIT_NOT_TRACKED,
             );
         } else {
             $remotes = exec("cd $pathArg; git remote");
@@ -85,7 +86,7 @@ class Modules
         $hash = exec("cd $pathArg; git rev-parse $remote/master");
 
         if ($ahead != 0 && $behind != 0) {
-            $status = sprintf(self::STATUS_GIT_BRANCH_DIVERGED, array($ahead, $behind));
+            $status = sprintf(self::STATUS_GIT_BRANCH_DIVERGED, $ahead, $behind);
         } else if ($ahead == 0 && $behind != 0) {
             $status = sprintf(self::STATUS_GIT_BRANCH_BEHIND, $behind);
         } else if ($ahead != 0 && $behind == 0) {
