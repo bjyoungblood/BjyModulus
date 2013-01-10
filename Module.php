@@ -11,6 +11,9 @@ class Module implements AutoloaderProviderInterface
 {
     protected static $loadedModules = array();
 
+    /**
+     * @return array
+     */
     public function getAutoloaderConfig()
     {
         return array(
@@ -26,21 +29,33 @@ class Module implements AutoloaderProviderInterface
         );
     }
 
+    /**
+     * @return mixed
+     */
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
     }
 
+    /**
+     * @param \Zend\ModuleManager\ModuleManager $moduleManager
+     */
     public function init(ModuleManager $moduleManager)
     {
         $moduleManager->getEventManager()->attach('loadModules.post', array($this, 'modulesLoaded'));
     }
 
+    /**
+     * @param \Zend\ModuleManager\ModuleEvent $e
+     */
     public function modulesLoaded(ModuleEvent $e)
     {
         self::$loadedModules = $e->getTarget()->getLoadedModules();
     }
 
+    /**
+     * @return array
+     */
     public static function getLoadedModules()
     {
         return self::$loadedModules;
