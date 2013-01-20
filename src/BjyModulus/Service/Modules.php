@@ -42,7 +42,7 @@ class Modules
         $localHash = exec("cd $pathArg; git rev-parse HEAD");
         if ($localHash == '') {
             $moduleVersions = array(
-                'local'        => 'N/A',
+                'localHash'    => 'N/A',
                 'upstreamHash' => 'N/A',
                 'status'       => self::STATUS_GIT_NOT_TRACKED,
             );
@@ -59,7 +59,7 @@ class Modules
             }
 
             $moduleVersions = array(
-                'local'        => $localHash,
+                'localHash'    => $localHash,
                 'upstreamHash' => $upstream['upstreamHash'],
                 'status'       => $upstream['status'],
             );
@@ -83,7 +83,7 @@ class Modules
         $ahead = count($ahead);
         $behind = count($behind);
 
-        $hash = exec("cd $pathArg; git rev-parse $remote/master");
+        $remoteHash = exec("cd $pathArg; git rev-parse $remote/master");
 
         if ($ahead != 0 && $behind != 0) {
             $status = sprintf(self::STATUS_GIT_BRANCH_DIVERGED, $ahead, $behind);
@@ -96,7 +96,7 @@ class Modules
         }
 
         return array(
-            'upstreamHash' => $hash,
+            'upstreamHash' => $remoteHash,
             'status'       => $status,
         );
     }
