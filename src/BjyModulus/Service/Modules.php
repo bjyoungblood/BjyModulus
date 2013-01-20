@@ -42,7 +42,7 @@ class Modules
         $localHash = exec("cd $pathArg; git rev-parse HEAD");
         if ($localHash == '') {
             $moduleVersions = array(
-                'local'        => 'N/A',
+                'localHash'    => 'N/A',
                 'upstreamHash' => 'N/A',
                 'status'       => self::STATUS_GIT_NOT_TRACKED,
             );
@@ -59,7 +59,7 @@ class Modules
             }
 
             $moduleVersions = array(
-                'local'        => $localHash,
+                'localHash'    => $localHash,
                 'upstreamHash' => $upstream['upstreamHash'],
                 'status'       => $upstream['status'],
             );
