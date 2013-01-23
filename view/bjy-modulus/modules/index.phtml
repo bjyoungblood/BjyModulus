@@ -7,10 +7,10 @@
     </tr>
     <?php foreach ($this->modules as $name => $data) : ?>
     <tr>
-        <td><?=$name?></td>
-        <td><?=$data['local']?></td>
-        <td><?=$data['upstreamHash']?></td>
-        <td><?=$data['status'];?></td>
+        <td><?php echo $name; ?></td>
+        <td><?php echo $data['localHash']; ?></td>
+        <td><?php echo $data['upstreamHash']; ?></td>
+        <td><?php echo $data['status']; ?></td>
     </tr>
     <?php endforeach; ?>
 </table>
