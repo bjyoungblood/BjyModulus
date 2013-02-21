@@ -42,13 +42,13 @@ class Module implements AutoloaderProviderInterface
      */
     public function init(ModuleManager $moduleManager)
     {
-        $moduleManager->getEventManager()->attach('loadModules.post', array($this, 'modulesLoaded'));
+        $moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULES_POST, array($this, 'onModulesLoaded'));
     }
 
     /**
      * @param \Zend\ModuleManager\ModuleEvent $e
      */
-    public function modulesLoaded(ModuleEvent $e)
+    public function onModulesLoaded(ModuleEvent $e)
     {
         self::$loadedModules = $e->getTarget()->getLoadedModules();
     }
