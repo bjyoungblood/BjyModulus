@@ -4,6 +4,10 @@ namespace BjyModulus\Service;
 
 use BjyModulus\Module;
 
+/**
+ * Class Modules
+ * @package BjyModulus\Service
+ */
 class Modules
 {
     const STATUS_GIT_BRANCH_DIVERGED = 'Your branch has diverged; %d ahead, %d behind';
@@ -28,44 +32,43 @@ class Modules
     /**
      * @param string $name Module name
      */
-    public function getModuleCommitHashes($name)
+    public function getModuleInfo($name)
     {
         $modules = Module::getLoadedModules();
         $module = $modules[$name];
-        $moduleVersions = array();
+        $moduleInfo = array(
+            'localHash'  => 'N/A',
+            'remoteHash' => 'N/A',
+            'version'    => 'N/A',
+            'status'     => self::STATUS_GIT_NOT_TRACKED,
+        );;
 
         $class = new \ReflectionClass($module);
         $path = dirname($class->getFileName());
-
         $pathArg = escapeshellarg($path);
 
         $localHash = exec("cd $pathArg; git rev-parse HEAD");
-        if ($localHash == '') {
-            $moduleVersions = array(
-                'localHash'    => 'N/A',
-                'upstreamHash' => 'N/A',
-                'status'       => self::STATUS_GIT_NOT_TRACKED,
-            );
-        } else {
+        if ($localHash != '') {
             $remotes = exec("cd $pathArg; git remote");
             $remotes = explode("\n", $remotes);
 
             if (array_search("upstream", $remotes) !== false) {
-                $upstream = $this->getUpstreamHash($pathArg, 'upstream');
+                $remote = $this->getRemoteRepoInfo($pathArg, 'upstream');
             } else if (array_search("origin", $remotes) !== false) {
-                $upstream = $this->getUpstreamHash($pathArg, 'origin');
+                $remote = $this->getRemoteRepoInfo($pathArg, 'origin');
             } else {
-                $upstream = 'n/a';
+                $remote = 'n/a';
             }
 
-            $moduleVersions = array(
+            $moduleInfo = array(
                 'localHash'    => $localHash,
-                'upstreamHash' => $upstream['upstreamHash'],
-                'status'       => $upstream['status'],
+                'remoteHash'   => $remote['remoteHash'],
+                'version'      => $remote['version'],
+                'status'       => $remote['status'],
             );
         }
 
-        return $moduleVersions;
+        return $moduleInfo;
     }
 
     /**
@@ -73,7 +76,7 @@ class Modules
      * @param $remote
      * @return array
      */
-    protected function getUpstreamHash($pathArg, $remote)
+    protected function getRemoteRepoInfo($pathArg, $remote)
     {
         exec("cd $pathArg; git fetch $remote");
         $ahead = $behind = array();
@@ -84,6 +87,7 @@ class Modules
         $behind = count($behind);
 
         $remoteHash = exec("cd $pathArg; git rev-parse $remote/master");
+        $version = exec("cd $pathArg; git describe --long --tags --always");
 
         if ($ahead != 0 && $behind != 0) {
             $status = sprintf(self::STATUS_GIT_BRANCH_DIVERGED, $ahead, $behind);
@@ -96,8 +100,9 @@ class Modules
         }
 
         return array(
-            'upstreamHash' => $remoteHash,
-            'status'       => $status,
+            'remoteHash' => $remoteHash,
+            'version'    => $version,
+            'status'     => $status,
         );
     }
 }
