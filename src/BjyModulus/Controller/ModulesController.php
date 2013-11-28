@@ -14,7 +14,7 @@ class ModulesController extends AbstractActionController
 
         $moduleVersions = array();
         foreach ($modules as $name => $module) {
-            $moduleVersions[$name] = $modulesService->getModuleCommitHashes($name);
+            $moduleVersions[$name] = $modulesService->getModuleInfo($name);
         }
 
         return array('modules' => $moduleVersions);

@@ -62,9 +62,9 @@ class Modules
 
             $moduleInfo = array(
                 'localHash'    => $localHash,
-                'remoteHash'   => $remote['remoteHash'],
-                'version'      => $remote['version'],
-                'status'       => $remote['status'],
+                'remoteHash'   => is_array($remote) ? $remote['remoteHash'] : $remote,
+                'version'      => is_array($remote) ? $remote['version'] : $remote,
+                'status'       => is_array($remote) ? $remote['status'] : $remote,
             );
         }
 
